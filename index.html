@@ -1,138 +1,166 @@
-
-
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ml">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>YuppTV BY DRMLIVE</title>
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-            background-color: #000;
-            color: #fff;
-        }
-        #player {
-            position: absolute;
-            width: 100% !important;
-            height: 30% !important;
-        }
-    </style>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Malayalam Music Player</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #121212;
+      color: #fff;
+      margin: 0;
+      padding: 0;
+    }
+
+    #search {
+      width: 100%;
+      padding: 14px;
+      font-size: 19px;
+      border: none;
+      outline: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 1000;
+    }
+
+    #results {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+      padding: 70px 10px 80px;
+    }
+
+    .song-item {
+      background: #1e1e1e;
+      border-radius: 10px;
+      padding: 7px;
+      text-align: center;
+      cursor: pointer;
+    }
+
+    .song-item img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 4px;
+    }
+
+    .song-item h4 {
+      margin: 5px 0;
+      font-size: 15px;
+    }
+
+    .song-item p {
+      margin: 0;
+      font-size: 13px;
+      color: #bbb;
+    }
+
+    #audio {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      z-index: 999;
+      background: #000;
+    }
+
+    #loading {
+      text-align: center;
+      padding: 10px;
+      color: #999;
+    }
+  </style>
 </head>
 <body>
-<div id="player"></div>
 
-<script src="https://content.jwplatform.com/libraries/KB5zFt7A.js"></script>
+<input type="text" id="search" placeholder="Search Songs " />
+<div id="results"></div>
+<div id="loading">Loading...</div>
+<audio id="audio" controls style="display: none;"></audio>
+
 <script>
-// Function to setup JWPlayer
-function setupPlayer(videoUrl, widevineLicenseUrl) {
-    const playerInstance = jwplayer("player").setup({
-        controls: true,
-        sharing: false,
-        displaytitle: true,
-        autoplay: true,
-        displaydescription: true,
-        abouttext: "Video Player By GHD PLAY",
-        aboutlink: "",
+  let currentPage = 1;
+  let loading = false;
+  let allSongs = {};
+  let songUrls = [];
 
-        skin: {
-            name: "netflix"
-        },
+  const searchInput = document.getElementById('search');
+  const resultsDiv = document.getElementById('results');
+  const loadingDiv = document.getElementById('loading');
+  const audio = document.getElementById('audio');
 
+  searchInput.addEventListener('input', () => {
+    currentPage = 1;
+    songUrls = [];
+    allSongs = {};
+    resultsDiv.innerHTML = '';
+    fetchSongs();
+  });
 
-        captions: {
-            color: "#FFF",
-            fontSize: 14,
-            backgroundOpacity: 2,
-            edgeStyle: "raise"
-        },
+  function fetchSongs() {
+    const query = searchInput.value.trim();
+    if (!query || loading) return;
 
-        playlist: [
-            {
-                title: "ASIANET TV",
-                description: "You're Watching",
-                sources: [
-                    {
-                        file: videoUrl,
-                        type: "hls",
-                        label: "1080p",
-                        default: true
-                    }
-                ]
-            }
-        ],
-        advertising: {
-            client: "vast",
-            schedule: [
-                {
-                    offset: "pre",
-                    tag: ""
-                }
-            ]
-        }
-    });
+    loading = true;
+    loadingDiv.style.display = 'block';
 
-    playerInstance.on("ready", function () {
-        const playerContainer = playerInstance.getContainer();
-        const buttonContainer = playerContainer.querySelector(".jw-button-container");
-        const timeSlider = playerContainer.querySelector(".jw-slider-time");
-        buttonContainer.replaceChild(timeSlider, spacer);
-
-        playerInstance.on("adBlock", () => {
-            const modal = document.querySelector("div.modal");
-            modal.style.display = "flex";
-
-            document.getElementById("close").addEventListener("click", () => location.reload());
+    fetch(`https://musicj-ghdorginalgmailcoms-projects.vercel.app/api/search/songs?q=${encodeURIComponent(query)}&p=${currentPage}`)
+      .then(res => res.json())
+      .then(data => {
+        const songs = data.results || [];
+        songs.forEach(song => {
+          const url = song.url?.["320kbps"];
+          if (url && !songUrls.includes(url)) {
+            allSongs[url] = song;
+            songUrls.push(url);
+            const item = document.createElement('div');
+            item.className = 'song-item';
+            item.innerHTML = `
+              <img src="${song.image?.["500X500"] || ''}" />
+              <h4>${song.title}</h4>
+              <p>${song.artists || ''}</p>
+            `;
+            item.addEventListener('click', () => playSong(url));
+            resultsDiv.appendChild(item);
+          }
         });
+        currentPage++;
+        loading = false;
+        loadingDiv.style.display = 'none';
+      })
+      .catch(err => {
+        console.error(err);
+        loading = false;
+        loadingDiv.style.display = 'none';
+      });
+  }
 
-        const rewindContainer = playerContainer.querySelector(".jw-display-icon-rewind");
-        const forwardContainer = rewindContainer.cloneNode(true);
-        const forwardDisplayButton = forwardContainer.querySelector(".jw-icon-rewind");
-        forwardDisplayButton.style.transform = "scaleX(-1)";
-        forwardDisplayButton.ariaLabel = "Forward 10 Seconds";
-        const nextContainer = playerContainer.querySelector(".jw-display-icon-next");
-        nextContainer.parentNode.insertBefore(forwardContainer, nextContainer);
+  function playSong(url) {
+    audio.src = url;
+    audio.style.display = 'block';
+    audio.play();
+  }
 
-        playerContainer.querySelector(".jw-display-icon-next").style.display = "none";
-        const rewindControlBarButton = buttonContainer.querySelector(".jw-icon-rewind");
-        const forwardControlBarButton = rewindControlBarButton.cloneNode(true);
-        forwardControlBarButton.style.transform = "scaleX(-1)";
-        forwardControlBarButton.ariaLabel = "Forward 10 Seconds";
-        rewindControlBarButton.parentNode.insertBefore(forwardControlBarButton, rewindControlBarButton.nextElementSibling);
-
-        [forwardDisplayButton, forwardControlBarButton].forEach((button) => {
-            button.onclick = () => {
-                playerInstance.seek(playerInstance.getPosition() + 10);
-            };
-        });
-    });
-}
-
-// Check if the video URL is a .php link and resolve it if necessary
-function resolveAndSetupPlayer(videoUrl) {
-    if (videoUrl.includes('.php')) {
-        fetch('resolve_redirect.php?url=' + encodeURIComponent(videoUrl))
-            .then(response => response.json())
-            .then(data => {
-                if (data.finalUrl) {
-                    setupPlayer(data.finalUrl, null);
-                } else {
-                    alert("Failed to resolve the PHP link. Please provide a valid MPD or HLS link.");
-                }
-            })
-            .catch(error => {
-                console.error('Error resolving URL:', error);
-                alert("Failed to resolve the PHP link. Please provide a valid MPD or HLS link.");
-            });
-    } else {
-        setupPlayer(videoUrl, null);
+  // Shuffle and autoplay next
+  audio.addEventListener('ended', () => {
+    if (songUrls.length > 0) {
+      const nextIndex = Math.floor(Math.random() * songUrls.length);
+      playSong(songUrls[nextIndex]);
     }
-}
+  });
 
-// Resolve and setup player
-resolveAndSetupPlayer("https://segment.yuppcdn.net/050522/mazhavilmanorama/playlist.m3u8");
+  // Infinite scroll
+  window.addEventListener('scroll', () => {
+    if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight - 100) {
+      fetchSongs();
+    }
+  });
 </script>
+
 </body>
 </html>
