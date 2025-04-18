@@ -1,465 +1,138 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Malayalam Songs</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding-top: 90px;
-      background-color: #111;
-      color: #eee;
-      overflow-x: hidden;
-    }
-
-    .top-bar {
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      background-color: #111;
-      padding: 15px;
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 8px;
-      z-index: 1000;
-      border-bottom: 2px solid #fff;
-    }
-
-    .button {
-      padding: 10px 12px;
-      border: none;
-      border-radius: 5px;
-      cursor: pointer;
-      border: 2px solid white ;
-      
-    }
-
-    .search-button {
-      background-color:#111;  
-      color: white;
-    }
-
-    .favorites-button {
-      background-color:#111;
-      padding: 10px 55px;
-      color: white;
-      border: 2px solid white ;
-      
-    }
-
-    .shuffle-button {
-      font-size: 16px;
-      color: white;
-      background-color:#111;
-      border-radius: 5px;
-      padding: 10px 55px;
-      margin-left: 5px;
-      cursor: pointer;
-      border: 2px solid white ;
-      
-    }
-
-    .search-bar {
-      flex-grow: 1;
-      background-color:#fff;
-      border: 2px solid white ;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      padding: 10px 50px;
-      
-    }
-
-    .search-bar input {
-      border: none;
-      outline: none;
-      flex-grow: 1;
-      font-size: 1rem;
-      color:#fff;
-      font-family: inherit;
-    }
-
-    .results {
-      margin-top: 10px;
-    }
-
-    .song-item {
-      display: flex;
-      align-items: center;
-      border-bottom: 2px solid #fff;
-      padding: 10px 0;
-      cursor: pointer;
-      scroll-margin: 100px;
-      position: relative;
-    }
-
-    .song-item img {
-      width: 60px;
-      height: 60px;
-      border-radius: 5px;
-      margin-right: 10px;
-      flex-shrink: 0;
-      
-    }
-
-    .song-details {
-      flex-grow: 1;
-    }
-
-    .song-details h4 {
-      margin: 0;
-      font-size: 16px;
-    }
-
-    .song-details p {
-      margin: 2px 0;
-      font-size: 13px;
-      color: #aaa;
-    }
-
-    .now-playing-label {
-      position: absolute;
-      top: 5px;
-      left: 70px;
-      background: red;
-      color: white;
-      font-size: 10px;
-      padding: 2px 5px;
-      border-radius: 4px;
-    }
-
-    .actions {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 5px;
-      margin-left: 10px;
-    }
-
-    .icon-button {
-      font-size: 18px;
-      cursor: pointer;
-      color: #fff;
-    }
-. shuffle.active {
-   color: red;
- }
-    .favorite.active {
-      color: red;
-    }
-
-    .loading-indicator {
-      text-align: center;
-      margin-top: 30px;
-      color: #fff;
-    }
-
-    .mini-player {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: #111;
-      border-top: 2px solid #444;
-      padding: 12px;
-      display: flex;
-      align-items: center;
-      z-index: 999;
-      box-shadow: 0 -2px 5px rgba(0, 0, 0, 0.5);
-      display: none;
-      gap: 10px;
-    }
-
-    .mini-player img {
-      width: 60px;
-      height: 60px;
-      border-radius: 5px;
-      object-fit: cover;
-    }
-
-    .mini-details {
-      flex-grow: 1;
-      overflow: hidden;
-    }
-
-    .mini-title {
-      font-size: 14px;
-      color: white;
-      white-space: nowrap;
-      overflow: hidden;
-      text-overflow: ellipsis;
-    }
-
-    .mini-controls {
-      width: 28px;
-      height: 28px;
-      background-size: 100% 100%;
-      background-repeat: no-repeat;
-      cursor: pointer;
-      user-select: none;
-    }
-
-    .mini-controls.play {
-      filter: brightness(0) invert(1);
-      background-image: url('https://cdn-icons-png.flaticon.com/512/727/727245.png');
-    }
-
-    .mini-controls.pause {
-      filter: brightness(0) invert(1);
-      background-image: url('https://cdn-icons-png.flaticon.com/512/727/727269.png');
-    }
-
-    .mini-controls.prev {
-      filter: brightness(0) invert(1);
-      background-image: url('https://cdn-icons-png.flaticon.com/512/271/271220.png');
-    }
-
-    .mini-controls.next {
-      filter: brightness(0) invert(1);
-      background-image: url('https://cdn-icons-png.flaticon.com/512/271/271228.png');
-    }
-
-    .time-bar {
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      width: 100%;
-      margin-top: 9px;
-    }
-
-    .seek {
-      width: 97%;
-    }
-
-    .time-info {
-      font-size: 12px;
-      color: #aaa;
-      display: flex;
-      justify-content: space-between;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YuppTV BY DRMLIVE</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+        }
+        #player {
+            position: absolute;
+            width: 100% !important;
+            height: 30% !important;
+        }
+    </style>
 </head>
 <body>
+<div id="player"></div>
 
-<div class="top-bar">
-  <input type="text" class="search-bar" id="searchInput" placeholder="Search songs...">
-  <button class="button search-button" onclick="startSearch()">Search</button>
-  <button class="button favorites-button" onclick="toggleFavorites()">Favorites</button>
-  <button class="button shuffle-button" onclick="toggleShuffle()">Shuffle</button>
-</div>
-
-<div id="results" class="results"></div>
-<div id="loading" class="loading-indicator" style="display:none;">Loading...</div>
-
-<div class="mini-player" id="miniPlayer">
-  <img id="miniThumb" src="" alt="Album Art" />
-  <div class="mini-details">
-    <div id="miniTitle" class="mini-title">Now Playing</div>
-    <div class="time-bar">
-      <input type="range" id="seekBar" class="seek" min="0" max="100" value="0">
-      <div class="time-info">
-        <span id="currentTime">0:00</span>
-        <span id="duration">0:00</span>
-      </div>
-    </div>
-  </div>
-  <div class="mini-controls prev" onclick="playPrevious()"></div>
-  <div id="miniToggle" class="mini-controls pause" onclick="toggleMiniPlayback()"></div>
-  <div class="mini-controls next" onclick="playNext()"></div>
-</div>
-
+<script src="https://content.jwplatform.com/libraries/KB5zFt7A.js"></script>
 <script>
-  let currentAudio = null;
-  let currentPlayingUrl = '';
-  let favorites = JSON.parse(localStorage.getItem("favorites") || "[]");
-  let allSongs = {};
-  let songUrls = [];
-  let searchQuery = '';
-  let currentPage = 1;
-  let loading = false;
-  let shuffle = false;
-  let showFavoritesOnly = false;
+// Function to setup JWPlayer
+function setupPlayer(videoUrl, widevineLicenseUrl) {
+    const playerInstance = jwplayer("player").setup({
+        controls: true,
+        sharing: false,
+        displaytitle: true,
+        autoplay: true,
+        displaydescription: true,
+        abouttext: "Video Player By GHD PLAY",
+        aboutlink: "",
 
-  function startSearch() {
-    searchQuery = document.getElementById('searchInput').value.trim();
-    currentPage = 1;
-    allSongs = {};
-    songUrls = [];
-    document.getElementById('results').innerHTML = '';
-    document.getElementById('loading').style.display = 'block';
-    fetchSongs();
-  }
+        skin: {
+            name: "netflix"
+        },
 
-  function fetchSongs() {
-    if (!searchQuery || loading) return;
-    loading = true;
-    fetch(`https://musicj-ghdorginalgmailcoms-projects.vercel.app/api/search/songs?q=${encodeURIComponent(searchQuery)}&p=${currentPage}`)
-      .then(res => res.json())
-      .then(data => {
-        const songs = data.results || [];
-        songs.forEach(song => {
-          const url = song.url['320kbps'];
-          allSongs[url] = song;
-          if (!songUrls.includes(url)) songUrls.push(url);
-        });
-        renderSongs(songs);
-        currentPage++;
-        loading = false;
-        document.getElementById('loading').style.display = 'none';
-      });
-  }
 
-  function renderSongs(songs) {
-    const resultsDiv = document.getElementById('results');
-    if (showFavoritesOnly) {
-      songs = songs.filter(song => favorites.includes(song.url['320kbps']));
-    }
-    resultsDiv.innerHTML += songs.map(song => {
-      const url = song.url['320kbps'];
-      const isFavorite = favorites.includes(url);
-      const isPlaying = url === currentPlayingUrl;
-      return `
-        <div class="song-item" id="song-${btoa(url)}" onclick="playFromList('${url}')">
-          ${isPlaying ? '<div class="now-playing-label">Now Playing</div>' : ''}
-          <img src="${song.image?.['500X500'] || ''}" alt="${song.title}">
-          <div class="song-details">
-            <h4>${song.title}</h4>
-            <p>${song.artists || ''} ${song.album ? '| ' + song.album : ''} ${song.year ? '(' + song.year + ')' : ''}</p>
-          </div>
-          <div class="actions" onclick="event.stopPropagation(); toggleFavorite(this.querySelector('.favorite'), '${url}')">
-            <div class="icon-button favorite ${isFavorite ? 'active' : ''}">&#10084;</div>
-          </div>
-        </div>
-      `;
-    }).join('');
-  }
+        captions: {
+            color: "#FFF",
+            fontSize: 14,
+            backgroundOpacity: 2,
+            edgeStyle: "raise"
+        },
 
-  function toggleFavorite(el, url) {
-    el.classList.toggle('active');
-    const index = favorites.indexOf(url);
-    if (index === -1) {
-      favorites.push(url);
-    } else {
-      favorites.splice(index, 1);
-    }
-    localStorage.setItem("favorites", JSON.stringify(favorites));
-  }
-
-  function toggleFavorites() {
-    showFavoritesOnly = !showFavoritesOnly;
-    currentPage = 1;
-    document.getElementById('results').innerHTML = '';
-    fetchSongs();
-  }
-
-  function toggleShuffle() {
-    shuffle = !shuffle;
-    alert("Shuffle: " + (shuffle ? "ON" : "OFF"));
-  }
-
-  function playFromList(url) {
-    const song = allSongs[url];
-    const audio = new Audio(url);
-    if (currentAudio) {
-      currentAudio.pause();
-      currentAudio = null;
-    }
-    currentAudio = audio;
-    currentAudio.play();
-    currentPlayingUrl = url;
-    updateMiniPlayer(song);
-    updateNowPlayingLabels();
-
-    const seekBar = document.getElementById("seekBar");
-    const curTime = document.getElementById("currentTime");
-    const duration = document.getElementById("duration");
-
-    audio.ontimeupdate = () => {
-      seekBar.max = audio.duration;
-      seekBar.value = audio.currentTime;
-      curTime.textContent = formatTime(audio.currentTime);
-      duration.textContent = formatTime(audio.duration);
-    };
-
-    seekBar.oninput = () => {
-      if (currentAudio) currentAudio.currentTime = seekBar.value;
-    };
-
-    audio.onended = playNext;
-  }
-
-  function formatTime(sec) {
-    const m = Math.floor(sec / 60);
-    const s = Math.floor(sec % 60);
-    return `${m}:${s < 10 ? '0' : ''}${s}`;
-  }
-
-  function playNext() {
-    const currentIndex = songUrls.indexOf(currentPlayingUrl);
-    if (shuffle) {
-      const randomIndex = Math.floor(Math.random() * songUrls.length);
-      playFromList(songUrls[randomIndex]);
-    } else if (currentIndex >= 0 && currentIndex < songUrls.length - 1) {
-      playFromList(songUrls[currentIndex + 1]);
-    }
-  }
-
-  function playPrevious() {
-    const currentIndex = songUrls.indexOf(currentPlayingUrl);
-    if (currentIndex > 0) {
-      playFromList(songUrls[currentIndex - 1]);
-    }
-  }
-
-  function updateMiniPlayer(song) {
-    const mini = document.getElementById('miniPlayer');
-    const thumb = document.getElementById('miniThumb');
-    const title = document.getElementById('miniTitle');
-    const toggle = document.getElementById('miniToggle');
-    mini.style.display = 'flex';
-    thumb.src = song.image?.['500X500'] || '';
-    title.textContent = song.title;
-    toggle.classList.remove('play');
-    toggle.classList.add('pause');
-  }
-
-  function toggleMiniPlayback() {
-    const toggle = document.getElementById('miniToggle');
-    if (!currentAudio) return;
-    if (currentAudio.paused) {
-      currentAudio.play();
-      toggle.classList.remove('play');
-      toggle.classList.add('pause');
-    } else {
-      currentAudio.pause();
-      toggle.classList.remove('pause');
-      toggle.classList.add('play');
-    }
-  }
-
-  function updateNowPlayingLabels() {
-    document.querySelectorAll('.song-item').forEach(el => {
-      el.querySelector('.now-playing-label')?.remove();
+        playlist: [
+            {
+                title: "ASIANET TV",
+                description: "You're Watching",
+                sources: [
+                    {
+                        file: videoUrl,
+                        type: "hls",
+                        label: "1080p",
+                        default: true
+                    }
+                ]
+            }
+        ],
+        advertising: {
+            client: "vast",
+            schedule: [
+                {
+                    offset: "pre",
+                    tag: ""
+                }
+            ]
+        }
     });
-    const el = document.getElementById('song-' + btoa(currentPlayingUrl));
-    if (el) {
-      const label = document.createElement('div');
-      label.className = 'now-playing-label';
-      label.textContent = 'Now Playing';
-      el.prepend(label);
-    }
-  }
 
-  window.addEventListener('scroll', () => {
-    if ((window.innerHeight + window.scrollY) >= (document.body.offsetHeight - 200)) {
-      fetchSongs();
+    playerInstance.on("ready", function () {
+        const playerContainer = playerInstance.getContainer();
+        const buttonContainer = playerContainer.querySelector(".jw-button-container");
+        const timeSlider = playerContainer.querySelector(".jw-slider-time");
+        buttonContainer.replaceChild(timeSlider, spacer);
+
+        playerInstance.on("adBlock", () => {
+            const modal = document.querySelector("div.modal");
+            modal.style.display = "flex";
+
+            document.getElementById("close").addEventListener("click", () => location.reload());
+        });
+
+        const rewindContainer = playerContainer.querySelector(".jw-display-icon-rewind");
+        const forwardContainer = rewindContainer.cloneNode(true);
+        const forwardDisplayButton = forwardContainer.querySelector(".jw-icon-rewind");
+        forwardDisplayButton.style.transform = "scaleX(-1)";
+        forwardDisplayButton.ariaLabel = "Forward 10 Seconds";
+        const nextContainer = playerContainer.querySelector(".jw-display-icon-next");
+        nextContainer.parentNode.insertBefore(forwardContainer, nextContainer);
+
+        playerContainer.querySelector(".jw-display-icon-next").style.display = "none";
+        const rewindControlBarButton = buttonContainer.querySelector(".jw-icon-rewind");
+        const forwardControlBarButton = rewindControlBarButton.cloneNode(true);
+        forwardControlBarButton.style.transform = "scaleX(-1)";
+        forwardControlBarButton.ariaLabel = "Forward 10 Seconds";
+        rewindControlBarButton.parentNode.insertBefore(forwardControlBarButton, rewindControlBarButton.nextElementSibling);
+
+        [forwardDisplayButton, forwardControlBarButton].forEach((button) => {
+            button.onclick = () => {
+                playerInstance.seek(playerInstance.getPosition() + 10);
+            };
+        });
+    });
+}
+
+// Check if the video URL is a .php link and resolve it if necessary
+function resolveAndSetupPlayer(videoUrl) {
+    if (videoUrl.includes('.php')) {
+        fetch('resolve_redirect.php?url=' + encodeURIComponent(videoUrl))
+            .then(response => response.json())
+            .then(data => {
+                if (data.finalUrl) {
+                    setupPlayer(data.finalUrl, null);
+                } else {
+                    alert("Failed to resolve the PHP link. Please provide a valid MPD or HLS link.");
+                }
+            })
+            .catch(error => {
+                console.error('Error resolving URL:', error);
+                alert("Failed to resolve the PHP link. Please provide a valid MPD or HLS link.");
+            });
+    } else {
+        setupPlayer(videoUrl, null);
     }
-  });
+}
+
+// Resolve and setup player
+resolveAndSetupPlayer("https://segment.yuppcdn.net/050522/mazhavilmanorama/playlist.m3u8");
 </script>
-
 </body>
-  </html>
+</html>
